@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>奥山結婚式二次会チーム分け</title>
+  
+  <!-- Google Fonts を使用して、洗練されたフォントを設定 -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(135deg, #3a3a3a, #555); /* ダークグラデーション */
+      color: #f0f0f0; /* 明るいグレーに変更 */
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      font-family: 'Roboto', sans-serif;
+      color: #fff; /* 明るい白で文字色を変更 */
+      font-size: 3em;
+      margin-top: 30px;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5); /* 暗めの影を付けて立体感を出す */
+    }
+
+    .team {
+      font-size: 2em;
+      font-weight: bold;
+      color: #f0f0f0; /* チーム名を淡い白に */
+      transition: transform 0.3s ease-in-out, color 0.5s ease;
+    }
+
+    .final-team {
+      font-size: 3.5em;
+      font-weight: bold;
+      color: #fff; /* 最終結果も白色 */
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      animation: popIn 1s ease-out;
+    }
+
+    input, button {
+      padding: 12px 20px;
+      font-size: 1.2em;
+      border-radius: 25px;
+      border: 2px solid #ddd;
+      margin-top: 20px;
+      outline: none;
+      transition: all 0.3s ease;
+      background-color: #444; /* ボタンの背景を暗めに */
+      color: #fff; /* ボタンの文字を白に */
+    }
+
+    input:focus, button:hover {
+      border-color: #3498db;
+      background-color: #3498db;
+      color: #fff;
+    }
+
+    #result {
+      margin-top: 40px;
+      font-size: 1.8em;
+      min-height: 50px;
+      transition: opacity 0.5s ease-out;
+    }
+
+    /* ポップインのアニメーション */
+    @keyframes popIn {
+      0% {
+        transform: scale(0);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>奥山結婚式二次会チーム分け</h1>
+  
+  <p>あなたの名前を漢字で入力してください:</p>
+  <input type="text" id="name" placeholder="名前を入力">
+  <button onclick="drawLottery()">くじを引く</button>
+
+  <div id="result"></div>
+
+  <script>
+    // 事前に決めておいた参加者とチームのマッピング（ここに追加）
+    const teamMap = {
+      "渡辺芽吹": "A",
+      "武田佳記": "A",
+      "梶浦航也": "A",
+      "佐藤貴彰": "A",
+      "三浦翔平": "A",
+      "佐藤駿": "B",
+      "森谷一輝": "B",
+      "藤田和樹": "B",
+      "及川瑞加": "B",
+      "小野美奈": "B",
+      "渡辺光珠": "C",
+      "伏谷綜太": "C",
+      "菅原隆輔": "C",
+      "望月穂乃香": "C",
+      "榎本葉月": "C",
+      "高橋諒友": "D",
+      "日向輝": "D",
+      "櫻井洸大": "D",
+      "福岡沙紋": "D",
+      "佐藤奈々": "D",
+      "加藤秀人": "E",
+      "星川嘉之": "E",
+      "三好寿磨": "E",
+      "大久保美紗": "E",
+      "加藤仁美": "E",
+      "佐藤洋一": "F",
+      "中村翔馬": "F",
+      "眞木優磨": "F",
+      "山口美玲": "F",
+      "奥山知花": "F",
+      "坂本亘輝": "G",
+      "加藤綾": "G",
+      "西塔侑哉": "G",
+      "阿部歩夏": "G",
+      "河本麗": "G",
+      "松野将平": "H",
+      "増子悟志": "H",
+      "山田智也": "H",
+      "山田百々花": "H",
+      "大杉まりあ": "H",
+      "竹内悠祐": "I",
+      "松本啓佑": "I",
+      "伊藤賢也": "I",
+      "高橋絵里": "I",
+      "山本育海": "I"
+    };
+
+    // チーム名リスト（ランダム表示用）
+    const teams = ["A", "B", "C", "D", "E", "F", "G", "H", "I"];
+
+    // ランダムチーム割り振り
+    function drawLottery() {
+      const name = document.getElementById("name").value.trim();
+      const resultDiv = document.getElementById("result");
+
+      // 名前が入力されていない場合
+      if (name === "") {
+        resultDiv.innerHTML = "名前を入力してください。";
+        resultDiv.style.color = "#ff6347"; // 赤色の警告メッセージ
+        return;
+      }
+
+      // 名前が事前に決められている場合、そのチームを表示
+      if (teamMap[name]) {
+        const team = teamMap[name];
+
+        // ランダムなチーム名を素早く繰り返し表示
+        let count = 0;
+        let interval = setInterval(() => {
+          let randomTeam = teams[Math.floor(Math.random() * teams.length)];
+          resultDiv.innerHTML = `<h2 class="team">"${randomTeam}"</h2>`;
+          count++;
+          
+          // ランダム表示を繰り返し、3秒後に終了
+          if (count > 20) { // 3秒間表示 (150ms * 20 = 3000ms = 3秒)
+            clearInterval(interval);
+            setTimeout(() => {
+              // 最終的なチーム名表示
+              const finalTeam = teamMap[name];
+              resultDiv.innerHTML = `<h2 class="final-team">"${finalTeam}"</h2>`;
+            }, 500); // 500msの遅延で決定を表示
+          }
+        }, 150); // 150msごとにランダム表示
+      } else {
+        resultDiv.innerHTML = "正しい氏名を入力してください。";
+        resultDiv.style.color = "#ff6347"; // 赤色の警告メッセージ
+      }
+    }
+  </script>
+
+</body>
+</html>
